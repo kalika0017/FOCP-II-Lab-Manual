@@ -1,0 +1,58 @@
+#include <iostream>
+#include <sstream>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string str, word, result="";
+    int wordCount=0, digitCount=0, specialCount=0;
+
+    cout<<"Enter a string: ";
+    getline(cin,str);
+
+    // Count digits and special characters
+    for(int i=0;i<str.length();i++){
+        if(isdigit(str[i]))
+            digitCount++;
+        else if(!isalnum(str[i]) && str[i]!=' ')
+            specialCount++;
+    }
+
+    // Remove extra spaces
+    stringstream ss(str);
+    while(ss >> word){
+        if(result!="")
+            result += " ";
+        result += word;
+        wordCount++;
+    }
+
+    // Convert to sentence case
+    if(result.length()>0){
+        result[0] = toupper(result[0]);
+        for(int i=1;i<result.length();i++)
+            result[i] = tolower(result[i]);
+    }
+
+    // Validation
+    bool valid=true;
+    for(int i=0;i<result.length();i++){
+        if(!(isalnum(result[i]) || result[i]==' ')){
+            valid=false;
+            break;
+        }
+    }
+
+    // Output
+    cout<<"\nNormalized String: "<<result<<endl;
+    cout<<"Total Words: "<<wordCount<<endl;
+    cout<<"Total Digits: "<<digitCount<<endl;
+    cout<<"Total Special Characters: "<<specialCount<<endl;
+
+    if(valid)
+        cout<<"String is valid (contains only alphabets, digits and spaces)";
+    else
+        cout<<"String is invalid (contains special characters)";
+
+    return 0;
+}
